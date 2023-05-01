@@ -1,0 +1,4 @@
+name: Papyrus
+main: ru.armagidon.papyrus.Papyrus
+version: '${version}'
+api-version: 1.16

@@ -1,0 +1,31 @@
+services:
+  papyrus-test-spigot:
+    build: .
+    ports:
+      - 25565:25565
+    volumes:
+      - ../:/plugin
+      - ../.server/:/data
+    environment:
+      EULA: "TRUE"
+      VERSION: "1.16.5"
+      TYPE: "SPIGOT"
+      SPIGET_RESOURCES: "6245,28140"
+      OPS_FILE: "/extras/ops.json" 
+      FORCE_GAMEMODE: true
+      MODE: creative
+      EXEC_DIRECTLY: true
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+  mysql_database:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped 
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: database
+    ports:
+      - 3306:3306

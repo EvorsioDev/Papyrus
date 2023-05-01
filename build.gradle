@@ -1,0 +1,42 @@
+allprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+
+    group = 'ru.armagidon'
+    version = '1.0'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        annotationProcessor('org.jetbrains:annotations:23.1.0')
+        testCompileOnly('org.jetbrains:annotations:23.1.0')
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    }
+
+    test {
+        useJUnitPlatform()
+
+        testLogging({
+            showCauses = true
+            showExceptions = true
+            showStackTraces = true
+            exceptionFormat = "FULL"
+            events = ["FAILED", "PASSED", "SKIPPED", "STANDARD_OUT"]
+        })
+    }
+
+    java {
+        toolchain.languageVersion.set(JavaLanguageVersion.of(16))
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+            }
+        }
+    }
+}

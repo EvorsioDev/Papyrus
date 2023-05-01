@@ -1,0 +1,4 @@
+rootProject.name = 'papyrus'
+include 'papyrus-api'
+include 'papyrus-bukkit'
+
