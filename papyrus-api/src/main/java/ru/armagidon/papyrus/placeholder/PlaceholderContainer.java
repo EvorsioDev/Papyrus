@@ -1,34 +1,32 @@
 package ru.armagidon.papyrus.placeholder;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import ru.armagidon.papyrus.implementation.placeholder.PlaceholderContainerImpl;
 
 import java.util.Collection;
+import java.util.Optional;
+import java.util.Set;
 
-public interface PlaceholderContainer<P>
+public interface PlaceholderContainer
 {
-    void registerPlaceholder(@NotNull Placeholder<P> placeholder);
+    Optional<Placeholder> getPlaceholder(@NotNull PlaceholderId id);
 
-    void registerPlaceholdersAll(@NotNull PlaceholderContainer<P> placeholders);
+    Optional<Placeholder> getPlaceholder(@NotNull String namespace, @NotNull String id);
 
-    @NotNull Collection<Placeholder<P>> registeredPlaceholders();
+    @NotNull Collection<Placeholder> getAllPlaceholders();
 
-    @NotNull Collection<Placeholder<P>> getAllPlaceholdersByNamespace(@NotNull String namespace);
-
-    @Nullable Placeholder<P> getPlaceholderById(String namespace, String name);
-
-    default @Nullable Placeholder<P> getPlaceholderById(PlaceholderId id) {
-        return getPlaceholderById(id.namespace(), id.key());
+    static Builder builder() {
+        return new PlaceholderContainerImpl.BuilderImpl(Set.of());
     }
 
-    interface Builder<P> {
-        @NotNull Builder<P> registerPlaceholder(@NotNull Placeholder<P> placeholder);
+    interface Builder {
+        @NotNull Builder registerPlaceholder(@NotNull Placeholder placeholder);
 
-        @NotNull Builder<P> registerPlaceholdersAll(@NotNull Collection<Placeholder<P>> placeholders);
+        @NotNull Builder registerPlaceholdersAll(@NotNull Collection<Placeholder> placeholders);
 
-        @NotNull Builder<P> append(@NotNull PlaceholderContainer<P> another);
+        @NotNull Builder append(@NotNull PlaceholderContainer another);
 
-        @NotNull PlaceholderContainer<P> build();
+        @NotNull PlaceholderContainer build();
     }
 
 }

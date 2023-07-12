@@ -3,10 +3,15 @@ allprojects {
     apply plugin: 'maven-publish'
 
     group = 'ru.armagidon'
-    version = '1.0'
+    version = '0.2.0-alpha'
 
     repositories {
         mavenCentral()
+    }
+
+    configurations {
+        testImplementation.extendsFrom implementation
+        testImplementation.extendsFrom compileOnly
     }
 
     dependencies {

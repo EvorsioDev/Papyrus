@@ -8,7 +8,7 @@ services:
       - ../.server/:/data
     environment:
       EULA: "TRUE"
-      VERSION: "1.16.5"
+      VERSION: "1.17.1"
       TYPE: "SPIGOT"
       SPIGET_RESOURCES: "6245,28140"
       OPS_FILE: "/extras/ops.json" 

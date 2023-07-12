@@ -1,9 +1,9 @@
-FROM itzg/minecraft-server:java16-openj9
+FROM itzg/minecraft-server:java17
 
 COPY --chmod=755 extras/ops.json /extras/ops.json
 
 ENV EULA=TRUE
-ENV VERSION=1.16.5
+ENV VERSION=1.17.1
 ENV TYPE=PAPER
 ENV SPIGET_RESOURCES=6245,28140
 ENV OPS_FILE=/extras/ops.json

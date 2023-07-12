@@ -1,14 +1,13 @@
 package ru.armagidon.papyrus.text;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import ru.armagidon.papyrus.placeholder.PlaceholderContext;
 
 import java.util.List;
 
-public interface ReplacementContext<P> {
-    @Nullable P getPlayer();
+public interface ReplacementContext {
 
-    @NotNull List<?> getParams();
+    @NotNull PlaceholderContext getPlaceholderContext();
 
-    @NotNull String getRawParams();
+    @NotNull List<@NotNull String> getParameters();
 }

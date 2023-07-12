@@ -2,17 +2,17 @@ package ru.armagidon.papyrus.placeholder;
 
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import ru.armagidon.papyrus.placeholder.params.ParamSerializer;
 import ru.armagidon.papyrus.text.ReplacementContext;
 
+import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-public interface Placeholder<P> {
+public interface Placeholder {
+
     @NotNull PlaceholderId id();
 
-    CompletableFuture<@Nullable Component> apply(@NotNull ReplacementContext<P> context);
+    @NotNull CompletableFuture<Optional<Component>> parsePlaceholderContents(@NotNull ReplacementContext context);
 
-    CompletableFuture<@NotNull List<?>> parseParams(@Nullable P viewer, @NotNull String[] input);
 }
