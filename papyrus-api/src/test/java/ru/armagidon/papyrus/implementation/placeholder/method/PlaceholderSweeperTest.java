@@ -20,22 +20,23 @@ class PlaceholderSweeperTest {
         assertNotNull(container.getPlaceholder("test", "float"));
     }
 
+    @PlaceholderNamespace("test")
     private static final class TestPlaceholderHandler implements PlaceholderSweeperTarget {
 
 
-        @PlaceholderEntry(namespace = "test", key = "string")
+        @PlaceholderKey("string")
         public CompletableFuture<String> string() {
             return CompletableFuture.completedFuture("hello world");
         }
 
 
-        @PlaceholderEntry(namespace = "test", key = "integer")
+        @PlaceholderKey("integer")
         public CompletableFuture<Integer> integer() {
             return CompletableFuture.completedFuture(10);
         }
 
 
-        @PlaceholderEntry(namespace = "test", key = "float")
+        @PlaceholderKey("float")
         public CompletableFuture<Float> f() {
             return CompletableFuture.completedFuture(10f);
         }
