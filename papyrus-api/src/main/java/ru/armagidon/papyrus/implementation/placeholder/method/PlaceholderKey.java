@@ -7,9 +7,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PlaceholderEntry {
+public @interface PlaceholderKey {
 
-    String namespace();
-
-    String key();
+    String value();
 }

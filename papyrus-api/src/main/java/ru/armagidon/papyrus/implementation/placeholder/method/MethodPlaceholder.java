@@ -57,7 +57,7 @@ public class MethodPlaceholder implements Placeholder {
 
     private void validateInputMethod(Method inputMethod) {
         Validate.notNull(inputMethod);
-        if (!inputMethod.isAnnotationPresent(PlaceholderEntry.class))
+        if (!inputMethod.isAnnotationPresent(PlaceholderKey.class))
             throw new IllegalArgumentException("Method " + inputMethod.getName() + " is not annotated");
         Type returnType = inputMethod.getGenericReturnType();
 
