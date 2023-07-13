@@ -17,6 +17,7 @@ public class MultiSourceTextParserImpl implements MultiSourceTextParser
 
     public MultiSourceTextParserImpl(TextParser textParser) {
         this.textParser = textParser;
+        this.superContainer = PlaceholderContainer.builder().build();
     }
 
     @Override
