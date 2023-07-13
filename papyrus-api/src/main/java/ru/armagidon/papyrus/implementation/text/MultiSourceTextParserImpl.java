@@ -28,4 +28,9 @@ public class MultiSourceTextParserImpl implements MultiSourceTextParser
     public synchronized void registerSource(PlaceholderContainer source) {
         this.superContainer = PlaceholderContainer.builder().append(superContainer).append(source).build();
     }
+
+    @Override
+    public PlaceholderContainer getSuperSource() {
+        return superContainer;
+    }
 }
