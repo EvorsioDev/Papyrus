@@ -3,7 +3,6 @@ package ru.armagidon.papyrus.implementation.text;
 import net.kyori.adventure.builder.AbstractBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
-import net.kyori.adventure.util.Buildable;
 import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.NotNull;
 import ru.armagidon.papyrus.placeholder.Placeholder;
@@ -39,7 +38,8 @@ public class TextParserImpl implements TextParser
                 .thenApply(builder -> builder.times(Integer.MAX_VALUE))
                 .thenApply(replacementBuilder -> replacementBuilder.replacement((matchResult, componentBuilder) -> {
                     String matchedString = matchResult.group(1);
-                    LinkedList<String> placeholderParts = Arrays.stream(matchedString.split(separator)).collect(Collectors.toCollection(LinkedList::new));
+                    LinkedList<String> placeholderParts = Arrays.stream(matchedString.split(separator))
+                            .collect(Collectors.toCollection(LinkedList::new));
                     if (placeholderParts.size() < 2) return componentBuilder;
                     String namespace = placeholderParts.poll();
                     String key = placeholderParts.poll();
@@ -59,7 +59,8 @@ public class TextParserImpl implements TextParser
                             return List.copyOf(placeholderParts);
                         }
                     };
-                    return placeholder.get().parsePlaceholderContents(replacementContext).join().orElse(componentBuilder.build());
+                    return placeholder.get().parsePlaceholderContents(replacementContext).join()
+                            .orElse(componentBuilder.build());
                 })).thenApply(AbstractBuilder::build).thenApply(input::replaceText);
     }
 
