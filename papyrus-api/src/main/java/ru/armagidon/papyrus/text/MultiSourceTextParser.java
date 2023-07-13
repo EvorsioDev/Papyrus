@@ -12,4 +12,6 @@ public interface MultiSourceTextParser {
     @NotNull CompletableFuture<@NotNull Component> parse(@NotNull PlaceholderContext context, @NotNull Component input);
 
     void registerSource(PlaceholderContainer source);
+
+    PlaceholderContainer getSuperSource();
 }

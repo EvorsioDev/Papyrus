@@ -11,11 +11,11 @@ Papyrus is modern, minimalistic, asynchonous, safer alternative to Placeholder A
 4. Delegation of placeholder handling via annotations
 5. Placeholder scopes
 6. Highly customizable
+7. Unbound from player as context 
 
 ## TODO
 1. Emulation of PlaceholderAPI expansions for compatibility
 2. Add more customizations to text parser
-3. Add loading placeholders
 
 ## How to contribute
 Clone this repository. Make your changes. Submit a PR.
