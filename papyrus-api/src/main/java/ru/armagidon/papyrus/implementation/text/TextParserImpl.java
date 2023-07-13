@@ -1,5 +1,6 @@
 package ru.armagidon.papyrus.implementation.text;
 
+import com.google.common.base.Splitter;
 import net.kyori.adventure.builder.AbstractBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
@@ -12,10 +13,7 @@ import ru.armagidon.papyrus.placeholder.PlaceholderId;
 import ru.armagidon.papyrus.text.ReplacementContext;
 import ru.armagidon.papyrus.text.TextParser;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -28,7 +26,7 @@ public class TextParserImpl implements TextParser
 
     protected TextParserImpl(@NotNull Config config) {
         Validate.notNull(config);
-        this.separator = Pattern.quote(config.separator());
+        this.separator = config.separator();
         this.parserPattern = config.generatePattern();
     }
 
@@ -37,31 +35,26 @@ public class TextParserImpl implements TextParser
         return CompletableFuture.supplyAsync(() -> TextReplacementConfig.builder().match(parserPattern))
                 .thenApply(builder -> builder.times(Integer.MAX_VALUE))
                 .thenApply(replacementBuilder -> replacementBuilder.replacement((matchResult, componentBuilder) -> {
-                    String matchedString = matchResult.group(1);
-                    LinkedList<String> placeholderParts = Arrays.stream(matchedString.split(separator))
-                            .collect(Collectors.toCollection(LinkedList::new));
-                    if (placeholderParts.size() < 2) return componentBuilder;
-                    String namespace = placeholderParts.poll();
-                    String key = placeholderParts.poll();
-                    PlaceholderId placeholderId = PlaceholderId.of(namespace, key);
+                    Queue<String> placeholderContentQueue = new LinkedList<>(Splitter.on(separator)
+                            .splitToList(matchResult.group(1)));
+
+                    if (placeholderContentQueue.size() < 2)
+                        return componentBuilder;
+
+                    PlaceholderId placeholderId = PlaceholderId.of(placeholderContentQueue.poll(), placeholderContentQueue.poll());
                     Optional<Placeholder> placeholder = container.getPlaceholder(placeholderId);
+
                     if (placeholder.isEmpty())
                         return componentBuilder;
 
-                    ReplacementContext replacementContext = new ReplacementContext() {
-                        @Override
-                        public @NotNull PlaceholderContext getPlaceholderContext() {
-                            return context;
-                        }
 
-                        @Override
-                        public @NotNull List<@NotNull String> getParameters() {
-                            return List.copyOf(placeholderParts);
-                        }
-                    };
+                    ReplacementContext replacementContext = ReplacementContext.context(context, List.copyOf(placeholderContentQueue));
+
                     return placeholder.get().parsePlaceholderContents(replacementContext).join()
                             .orElse(componentBuilder.build());
-                })).thenApply(AbstractBuilder::build).thenApply(input::replaceText);
+                })).thenApply(AbstractBuilder::build)
+                .thenApply(input::replaceText)
+                .thenApply(Component::compact);
     }
 
     public static Config config() {
